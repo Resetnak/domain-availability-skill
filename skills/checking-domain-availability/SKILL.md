@@ -1,6 +1,6 @@
 ---
 name: checking-domain-availability
-description: Use when the user wants to know if a domain name is available or already registered, wants to compare a name across multiple TLDs (.com, .io, .ai, .dev, etc.), or is naming a project/startup/app and wants to check the domain plus whether the matching npm package name and GitHub username are free too.
+description: Use when the user wants to know if a domain name is available or already registered, wants to compare a name across multiple TLDs (.com, .io, .ai, .dev, etc.), or is naming a project/startup/app and wants to check the domain plus whether the matching npm package name and GitHub username are free too (optionally also PyPI or crates.io, on request).
 ---
 
 # Checking Domain Availability
@@ -52,10 +52,26 @@ GET https://api.github.com/users/<name>
 
 No auth needed. `200` = taken, `404` = free. Unauthenticated requests are capped at 60/hour per IP (`x-ratelimit-remaining` header) — fine for a handful of checks, but don't loop this over a big list of candidate names.
 
+## Optional extra registries
+
+Not run by default — only add these when the user names the ecosystem explicitly (e.g. "check PyPI too", "is this crate name free").
+
+**PyPI (Python):**
+```
+GET https://pypi.org/pypi/<name>/json
+```
+`200` = taken, `404` = free. No auth.
+
+**crates.io (Rust):**
+```
+GET https://crates.io/api/v1/crates/<name>
+```
+`200` = taken, `404` = free. **Requires a descriptive `User-Agent` header** (e.g. `User-Agent: <tool-name> (contact-info)`) — requests without one get `403`, which looks like a block, not "taken".
+
 ## Workflow
 
 1. Strip any TLD the user already typed to get the bare `name`.
-2. If the user is just asking about a domain, only call the domain API. If they're naming a project/startup/package/tool, run all three checks (domain, npm, GitHub) for that one `name` — this combo is the actual point of the skill, not domains in isolation.
+2. If the user is just asking about a domain, only call the domain API. If they're naming a project/startup/package/tool, run the three default checks (domain, npm, GitHub) for that one `name` — this combo is the actual point of the skill, not domains in isolation. Only add PyPI/crates.io when the user names that ecosystem.
 3. Call the domain API. If the user didn't name specific TLDs, omit `tlds` to get the 10-extension default set.
 4. Show one combined summary: a TLD table (available ✅ / taken ❌ / unknown-timed out ⚠️, from `registrarHint`), plus one line each for npm and GitHub (✅/❌).
 5. Ask once whether to check more TLDs (suggest a few not already covered, e.g. `.ai`, `.so`, a ccTLD) — don't re-ask for the same name unless the user brings it up again.
@@ -77,4 +93,6 @@ curl -s -o /dev/null -w "%{http_code}" "https://api.github.com/users/mybrand"
 - Treating an empty `results` array as failure — it means the TLD wasn't recognized, not an error.
 - Retrying immediately after 429 — respect `Retry-After` and tell the user, don't loop.
 - Checking npm/GitHub for a plain "is this domain free?" question — only pull those in when the user is actually naming something, not for every domain lookup.
+- Calling crates.io without a `User-Agent` header — it 403s and looks like the name is blocked, not free/taken.
+- Running PyPI/crates.io by default — they're opt-in, only when the user names that ecosystem.
 - Claiming to check social handles — there's no reliable free API for that; say it's out of scope.

@@ -25,7 +25,7 @@ agent: checking domain, npm, and GitHub...
 ## Why
 
 - **Zero setup** — no API key, no config, just the skill.
-- **Checks the whole naming decision, not just the domain** — TLDs, npm package name, and GitHub username/org together when you're naming a project; just the domain when that's all you asked.
+- **Checks the whole naming decision, not just the domain** — TLDs, npm package name, and GitHub username/org together when you're naming a project; just the domain when that's all you asked. PyPI and crates.io are one ask away if you name that ecosystem.
 - **Multi-TLD in one call** — the default set (`com`, `io`, `dev`, `app`, `co`, `net`, `org`, `me`, `ai`, `xyz`) or any TLDs you name.
 - **Interactive** — asks once whether to widen the TLD search, doesn't nag.
 - **Handles the edge cases** — unrecognized TLDs, per-TLD registry timeouts, and whole-request timeouts are documented and retried sanely, not silently mis-reported.
