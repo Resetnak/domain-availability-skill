@@ -1,22 +1,46 @@
-# checking-domain-availability
+# domain-availability-skill
 
-A skill that checks whether a domain name is registered across one or more TLDs, using the free [domainee.dev](https://domainee.dev/docs/free-apis/domain-availability-checker) API. No API key needed.
+**Agent skill: check domain name availability across TLDs, no API key required.**
 
-Ask your agent things like:
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![skills.sh](https://skills.sh/b/Resetnak/domain-availability-skill)](https://skills.sh/Resetnak/domain-availability-skill)
+![Agent Skill](https://img.shields.io/badge/agent--skill-SKILL.md-blueviolet)
+![No API key](https://img.shields.io/badge/API%20key-not%20required-brightgreen)
 
-- "is coolstartup available as a domain?"
-- "check coolstartup.com, and also try .ai and .so"
+Ask your coding agent to check whether a domain is free — it calls the free [domainee.dev](https://domainee.dev/docs/free-apis/domain-availability-checker) API, shows availability per TLD, and offers to check further extensions (`.ai`, `.io`, `.so`, ccTLDs, ...).
 
-It reports availability per TLD and offers to check further extensions.
+```
+you:   is "coolstartup" available as a domain?
+agent: checking the usual extensions...
+
+       .com  ❌ taken
+       .io   ✅ available
+       .dev  ✅ available
+       .ai   ✅ available
+       ...
+
+       want me to check any other extensions?
+```
+
+## Why
+
+- **Zero setup** — no API key, no config, just the skill.
+- **Multi-TLD in one call** — checks up to the whole default set (`com`, `io`, `dev`, `app`, `co`, `net`, `org`, `me`, `ai`, `xyz`) or any TLDs you name.
+- **Interactive** — asks once whether to widen the search, doesn't nag.
+- **Handles the edge cases** — unrecognized TLDs and per-TLD registry timeouts are documented, not silently mis-reported.
 
 ## Install
 
 ```bash
-npx skillsadd <owner>/domain-availability-skill
+npx skills add Resetnak/domain-availability-skill
 ```
 
-Or copy `skills/checking-domain-availability/` into your agent's skills directory (e.g. `~/.claude/skills/`).
+Or copy `skills/checking-domain-availability/` straight into your agent's skills directory (e.g. `~/.claude/skills/`).
+
+## How it works
+
+See [`skills/checking-domain-availability/SKILL.md`](skills/checking-domain-availability/SKILL.md) — one `GET` request to `domainee.dev/api/v1/tools/domain-availability-checker`, rate-limited to 30/min and 500/day per IP.
 
 ## License
 
-MIT
+MIT — see [LICENSE](LICENSE).
