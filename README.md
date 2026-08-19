@@ -6,6 +6,7 @@
 [![skills.sh](https://skills.sh/b/Resetnak/domain-availability-skill)](https://skills.sh/Resetnak/domain-availability-skill)
 ![Agent Skill](https://img.shields.io/badge/agent--skill-SKILL.md-blueviolet)
 ![No API key](https://img.shields.io/badge/API%20key-not%20required-brightgreen)
+[![Stars this month](https://repometer.online/badge/Resetnak/domain-availability-skill/stars-30d.svg)](https://repometer.online/p/Resetnak/domain-availability-skill)
 
 The tiny problem that eats 20 minutes every time you name something: is the domain free, is the npm name taken, is the GitHub handle available? Ask your coding agent once, get all three.
 
