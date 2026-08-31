@@ -1,0 +1,13 @@
+{
+  "name": "domain-availability",
+  "description": "Check if a name is free across domain TLDs, npm, and GitHub in one go. No API key required.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Alexandr Rešetňak",
+    "email": "mail@resetnak.cz"
+  },
+  "homepage": "https://github.com/Resetnak/domain-availability-skill",
+  "repository": "https://github.com/Resetnak/domain-availability-skill",
+  "license": "MIT",
+  "keywords": ["domain", "availability", "npm", "github", "naming"]
+}
